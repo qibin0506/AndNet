@@ -206,4 +206,4 @@ public class App extends Application {
 }
 ```
 
-更多内容请操作实例代码和博客：
+更多内容请操作实例代码和博客：[http://blog.csdn.net/qibin0506/article/details/50127109](http://blog.csdn.net/qibin0506/article/details/50127109)
