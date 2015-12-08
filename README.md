@@ -122,6 +122,20 @@ Net.get("http://192.168.3.116/?name=loader&age=18&city=jinan",
         }, getClass().getName());
 ```
 
+### cancel
+
+``` java
+
+class MyActivity extend Activity {
+    
+    @Override
+    public void onDestroy() {
+        Net.cancel(getClass().getName());
+    }
+}
+
+```
+
 ### 6 定制HttpStack
 ``` java
 public class VolleyStack<T> extends AbsHttpStack<T> {
