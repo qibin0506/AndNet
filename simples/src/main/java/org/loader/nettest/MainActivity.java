@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     mTextView.setText(result.getMsg());
                 }
             }
-        });
+        }, getClass().getName());
 
 
 //        RequestParams params = new RequestParams("name", "loader");
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 //                            mTextView.setText(result.getMsg());
 //                        }
 //                    }
-//                });
+//                }, getClass().getName());
 
 
 //        User user = new User();
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 //                            mTextView.setText(result.getMsg());
 //                        }
 //                    }
-//                });
+//                }, getClass().getName());
 
 //        RequestParams params = new RequestParams("name", "qibin");
 //        params.add("file", new File(Environment.getExternalStorageDirectory()
@@ -89,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
 //            public void callback(Result<String> result) {
 //                mTextView.setText(result.getResult() + "");
 //            }
-//        });
+//        }, getClass().getName());
+    }
+
+    @Override
+    protected void onDestroy() {
+        Net.cancel(getClass().getName());
+        super.onDestroy();
     }
 }

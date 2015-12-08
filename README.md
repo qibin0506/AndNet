@@ -3,6 +3,12 @@ AndNet是一个Android开中中二次封装的网络框架，可以任意轻松�
 
 AndNet的网络请求框架默认使用OkHttp，当然你完全可以轻松的实现自己的请求操作并且替换，而你的业务逻辑代码无需任何变动。
 
+## 更新日志
+
+1. 加入debug
+2. 修复WeakReference带来的问题
+3. 重用网络框架的cancel功能，加入tag标识
+
 ## 使用
 
 ### 1 初始化
@@ -13,8 +19,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-       Net.init(new OkHttpStack());
+        OkHttpStack okHttpStack = new OkHttpStack();
+        okHttpStack.debug(true);
+        Net.init(okHttpStack);
        
     }
 }
@@ -76,7 +83,7 @@ Net.get("http://192.168.3.116/?name=loader&age=18&city=jinan",
                     mTextView.setText(result.getMsg());
                 }
             }
-        });
+        }, getClass().getName());
 ```
 
 ### 4 post请求
@@ -96,7 +103,7 @@ Net.get("http://192.168.3.116/?name=loader&age=18&city=jinan",
                             mTextView.setText(result.getMsg());
                         }
                     }
-                });
+                }, getClass().getName());
 ```
 
 ### 5 文件上传
@@ -112,7 +119,7 @@ Net.get("http://192.168.3.116/?name=loader&age=18&city=jinan",
             public void callback(Result<String> result) {
                 mTextView.setText(result.getResult() + "");
             }
-        });
+        }, getClass().getName());
 ```
 
 ### 6 定制HttpStack
@@ -133,9 +140,9 @@ public class VolleyStack<T> extends AbsHttpStack<T> {
      * @param callback 回调
      */
     @Override
-    public void get(String url, WeakReference<Net.Parser<T>> parser,
-                    WeakReference<Net.Callback<T>> callback) {
-        invoke(Request.Method.GET, url, null, parser, callback);
+    public void get(String url, Net.Parser<T> parser,
+                    Net.Callback<T> callback, final Object tag) {
+        invoke(Request.Method.GET, url, null, parser, callback, tag);
     }
 
     /**
@@ -148,9 +155,10 @@ public class VolleyStack<T> extends AbsHttpStack<T> {
      */
     @Override
     public void post(String url, RequestParams params,
-                     WeakReference<Net.Parser<T>> parser,
-                     WeakReference<Net.Callback<T>> callback) {
-        invoke(Request.Method.POST, url, params, parser, callback);
+                     Net.Parser<T> parser,
+                     Net.Callback<T> callback,
+                     final Object tag) {
+        invoke(Request.Method.POST, url, params, parser, callback, tag);
     }
 
     /**
@@ -164,8 +172,9 @@ public class VolleyStack<T> extends AbsHttpStack<T> {
      */
     private void invoke(final int method, final String url,
                         final RequestParams params,
-                        final WeakReference<Net.Parser<T>> parser,
-                        final WeakReference<Net.Callback<T>> callback) {
+                        final Net.Parser<T> parser,
+                        final Net.Callback<T> callback,
+                        final Object tag) {
         StringRequest request = new StringRequest(method, url,
                 new Response.Listener<String>() {
                     public void onResponse(String response) {
@@ -185,11 +194,11 @@ public class VolleyStack<T> extends AbsHttpStack<T> {
             }
         };
 
-        VolleyManager.getInstance(mContext).add(request);
+        VolleyManager.getInstance(mContext).add(request, tag);
     }
 
     @Override
-    public void cancel(String tag) {
+    public void cancel(Object tag) {
         VolleyManager.getInstance(mContext).cancel(tag);
     }
 }

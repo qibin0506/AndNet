@@ -1,25 +1,23 @@
 package org.loader.andnet.net;
 
 
-import java.lang.ref.WeakReference;
-
 /**
  * Created by qibin on 2015/11/29.
  */
 public interface INetStack<T> {
 
-    void get(final String url, final WeakReference<Net.Parser<T>> parser,
-             final WeakReference<Net.Callback<T>> callback);
+    void get(final String url, final Net.Parser<T> parser,
+             final Net.Callback<T> callback, final Object tag);
 
     void post(final String url, final RequestParams params,
-              final WeakReference<Net.Parser<T>> parser,
-              final WeakReference<Net.Callback<T>> callback);
+              final Net.Parser<T> parser,
+              final Net.Callback<T> callback, final Object tag);
 
-    void onNetResponse(final WeakReference<Net.Parser<T>> parser,
-                       final WeakReference<Net.Callback<T>> callback,
+    void onNetResponse(final Net.Parser<T> parser,
+                       final Net.Callback<T> callback,
                        final String response);
 
-    void onError(final WeakReference<Net.Callback<T>> callback, final String msg);
+    void onError(final Net.Callback<T> callback, final String msg);
 
-    void cancel(String tag);
+    void cancel(Object tag);
 }

@@ -47,7 +47,7 @@ public class VolleyManager {
 	 * @param tag
 	 */
 	public <T> void add(Request<T> request, Object tag) {
-		request.setTag(tag);
+		if(tag != null) request.setTag(tag);
 		add(request);
 	}
 	

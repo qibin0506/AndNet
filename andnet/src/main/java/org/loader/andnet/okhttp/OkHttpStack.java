@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,17 +38,18 @@ public class OkHttpStack<T> extends AbsHttpStack<T> {
     }
 
     @Override
-    public void get(String url, final WeakReference<Net.Parser<T>> parser,
-                    final WeakReference<Net.Callback<T>> callback) {
+    public void get(String url, final Net.Parser<T> parser,
+                    final Net.Callback<T> callback, final Object tag) {
         final Request request = new Request.Builder()
                 .url(url).build();
-        call(request, parser, callback);
+        call(request, parser, callback, tag);
     }
 
     @Override
     public void post(final String url, final RequestParams params,
-                     final WeakReference<Net.Parser<T>> parser,
-                     final WeakReference<Net.Callback<T>> callback) {
+                     final Net.Parser<T> parser,
+                     final Net.Callback<T> callback,
+                     final Object tag) {
         MultipartBuilder builder = new MultipartBuilder()
                 .type(MultipartBuilder.FORM);
 
@@ -70,12 +72,13 @@ public class OkHttpStack<T> extends AbsHttpStack<T> {
 
         Request request = new Request.Builder()
                 .url(url).post(builder.build()).build();
-        call(request, parser, callback);
+        call(request, parser, callback, tag);
     }
 
-    private void call(Request request, final WeakReference<Net.Parser<T>> parser,
-                      final WeakReference<Net.Callback<T>> callback) {
+    private void call(Request request, final Net.Parser<T> parser,
+                      final Net.Callback<T> callback, final Object tag) {
         Request.Builder builder = request.newBuilder();
+        if(tag != null) builder.tag(tag);
         LinkedHashMap<String, String> map = headers();
         if(map != null && !map.isEmpty()) {
             for(Iterator<String> iterator=map.keySet().iterator();iterator.hasNext();) {
@@ -120,7 +123,7 @@ public class OkHttpStack<T> extends AbsHttpStack<T> {
     }
 
     @Override
-    public void cancel(String tag) {
+    public void cancel(Object tag) {
         mClient.cancel(tag);
     }
 }

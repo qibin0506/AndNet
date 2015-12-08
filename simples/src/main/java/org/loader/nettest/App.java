@@ -17,6 +17,8 @@ public class App extends Application {
         super.onCreate();
 //        Net.init(new VolleyStack(this));
 //        Net.init(new OkHttpStack());
-        Net.init(new OkHttpHeaderStack());
+        OkHttpHeaderStack okHttpStack = new OkHttpHeaderStack();
+        okHttpStack.debug(true);
+        Net.init(okHttpStack);
     }
 }

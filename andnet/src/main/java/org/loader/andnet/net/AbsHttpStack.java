@@ -1,11 +1,19 @@
 package org.loader.andnet.net;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Created by qibin on 2015/11/29.
  */
 public abstract class AbsHttpStack<T> implements INetStack<T> {
+
+    protected boolean debug;
+
+    public void debug(boolean debug) {
+        this.debug = debug;
+    }
+
+    public boolean isDebug() {
+        return this.debug;
+    }
 
     /**
      * 请求成功
@@ -15,20 +23,22 @@ public abstract class AbsHttpStack<T> implements INetStack<T> {
      * @param response
      */
     @Override
-    public void onNetResponse(WeakReference<Net.Parser<T>> parser,
-                              WeakReference<Net.Callback<T>> callback,
+    public void onNetResponse(Net.Parser<T> parser,
+                              Net.Callback<T> callback,
                               String response) {
-        if (callback.get() == null) return;
-        if (parser.get() == null) {
+        if(debug) System.out.println(response);
+
+        if (callback == null) return;
+        if (parser == null) {
             Result<T> result = new Result<T>();
             result.setStatus(Result.ERROR);
             result.setMsg(Net.ERR_PARSE_MSG);
-            callback.get().callback(result);
+            callback.callback(result);
             return;
         }
 
-        Result<T> result = parser.get().parse(response);
-        callback.get().callback(result);
+        Result<T> result = parser.parse(response);
+        callback.callback(result);
     }
 
     /**
@@ -38,12 +48,13 @@ public abstract class AbsHttpStack<T> implements INetStack<T> {
      * @param msg
      */
     @Override
-    public void onError(WeakReference<Net.Callback<T>> callback, String msg) {
-        if (callback.get() == null) return;
+    public void onError(Net.Callback<T> callback, String msg) {
+        if(debug) System.out.println(msg);
+        if (callback == null) return;
 
         Result<T> result = new Result<T>();
         result.setStatus(Result.ERROR);
         result.setMsg(msg);
-        callback.get().callback(result);
+        callback.callback(result);
     }
 }

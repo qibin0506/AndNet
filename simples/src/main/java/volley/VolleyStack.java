@@ -35,9 +35,9 @@ public class VolleyStack<T> extends AbsHttpStack<T> {
      * @param callback 回调
      */
     @Override
-    public void get(String url, WeakReference<Net.Parser<T>> parser,
-                    WeakReference<Net.Callback<T>> callback) {
-        invoke(Request.Method.GET, url, null, parser, callback);
+    public void get(String url, Net.Parser<T> parser,
+                    Net.Callback<T> callback, final Object tag) {
+        invoke(Request.Method.GET, url, null, parser, callback, tag);
     }
 
     /**
@@ -50,9 +50,10 @@ public class VolleyStack<T> extends AbsHttpStack<T> {
      */
     @Override
     public void post(String url, RequestParams params,
-                     WeakReference<Net.Parser<T>> parser,
-                     WeakReference<Net.Callback<T>> callback) {
-        invoke(Request.Method.POST, url, params, parser, callback);
+                     Net.Parser<T> parser,
+                     Net.Callback<T> callback,
+                     final Object tag) {
+        invoke(Request.Method.POST, url, params, parser, callback, tag);
     }
 
     /**
@@ -66,8 +67,9 @@ public class VolleyStack<T> extends AbsHttpStack<T> {
      */
     private void invoke(final int method, final String url,
                         final RequestParams params,
-                        final WeakReference<Net.Parser<T>> parser,
-                        final WeakReference<Net.Callback<T>> callback) {
+                        final Net.Parser<T> parser,
+                        final Net.Callback<T> callback,
+                        final Object tag) {
         StringRequest request = new StringRequest(method, url,
                 new Response.Listener<String>() {
                     public void onResponse(String response) {
@@ -87,11 +89,11 @@ public class VolleyStack<T> extends AbsHttpStack<T> {
             }
         };
 
-        VolleyManager.getInstance(mContext).add(request);
+        VolleyManager.getInstance(mContext).add(request, tag);
     }
 
     @Override
-    public void cancel(String tag) {
+    public void cancel(Object tag) {
         VolleyManager.getInstance(mContext).cancel(tag);
     }
 }
