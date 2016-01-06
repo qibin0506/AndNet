@@ -5,14 +5,31 @@ package org.loader.andnet.net;
  */
 public abstract class AbsHttpStack<T> implements INetStack<T> {
 
-    protected boolean debug;
-
-    public void debug(boolean debug) {
-        this.debug = debug;
+    @Override
+    public void post(final String url, final String json,
+                     final Net.Parser<T> parser,
+                     final Net.Callback<T> callback, final Object tag) {
+        throw new UnsupportedOperationException("you must implement this operation by yourself!");
     }
 
-    public boolean isDebug() {
-        return this.debug;
+    @Override
+    public void put(final String url, final RequestParams params,
+                    final Net.Parser<T> parser,
+                    final Net.Callback<T> callback, final Object tag) {
+        throw new UnsupportedOperationException("you must implement this operation by yourself!");
+    }
+
+    @Override
+    public void put(final String url, final String json,
+                    final Net.Parser<T> parser,
+                    final Net.Callback<T> callback, final Object tag) {
+        throw new UnsupportedOperationException("you must implement this operation by yourself!");
+    }
+
+    @Override
+    public void delete(final String url, final Net.Parser<T> parser,
+                       final Net.Callback<T> callback, final Object tag) {
+        throw new UnsupportedOperationException("you must implement this operation by yourself!");
     }
 
     /**
@@ -23,11 +40,9 @@ public abstract class AbsHttpStack<T> implements INetStack<T> {
      * @param response
      */
     @Override
-    public void onNetResponse(Net.Parser<T> parser,
-                              Net.Callback<T> callback,
-                              String response) {
-        if(debug) System.out.println(response);
-
+    public void onNetResponse(final Net.Parser<T> parser,
+                              final Net.Callback<T> callback,
+                              final String response) {
         if (callback == null) return;
         if (parser == null) {
             Result<T> result = new Result<T>();
@@ -48,8 +63,7 @@ public abstract class AbsHttpStack<T> implements INetStack<T> {
      * @param msg
      */
     @Override
-    public void onError(Net.Callback<T> callback, String msg) {
-        if(debug) System.out.println(msg);
+    public void onError(final Net.Callback<T> callback, final String msg) {
         if (callback == null) return;
 
         Result<T> result = new Result<T>();

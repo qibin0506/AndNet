@@ -1,6 +1,5 @@
 package org.loader.andnet.helper;
 
-
 import org.loader.andnet.net.RequestParams;
 
 import java.lang.reflect.Field;
