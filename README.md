@@ -5,6 +5,12 @@ AndNet的网络请求框架默认使用OkHttp，当然你完全可以轻松的�
 
 ## 更新日志
 
+0.1.2版本更新
+1. 加入put、delete请求的支持
+2. 可直接post、put一段json
+3. cancel加入stack为空判断
+***
+0.1.1版本更新
 1. 加入debug
 2. 修复WeakReference带来的问题
 3. 重用网络框架的cancel功能，加入tag标识
