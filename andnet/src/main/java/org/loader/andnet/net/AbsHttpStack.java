@@ -5,6 +5,16 @@ package org.loader.andnet.net;
  */
 public abstract class AbsHttpStack<T> implements INetStack<T> {
 
+    private boolean debug;
+
+    public void debug(boolean debug) {
+        this.debug = debug;
+    }
+
+    public boolean isDebugMode() {
+        return this.debug;
+    }
+
     @Override
     public void post(final String url, final String json,
                      final Net.Parser<T> parser,
@@ -43,6 +53,7 @@ public abstract class AbsHttpStack<T> implements INetStack<T> {
     public void onNetResponse(final Net.Parser<T> parser,
                               final Net.Callback<T> callback,
                               final String response) {
+        if(isDebugMode()) System.out.println(response);
         if (callback == null) return;
         if (parser == null) {
             Result<T> result = new Result<T>();
@@ -64,6 +75,7 @@ public abstract class AbsHttpStack<T> implements INetStack<T> {
      */
     @Override
     public void onError(final Net.Callback<T> callback, final String msg) {
+        if(isDebugMode()) System.out.println(msg);
         if (callback == null) return;
 
         Result<T> result = new Result<T>();
