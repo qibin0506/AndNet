@@ -106,15 +106,18 @@ public class OkHttpStack<T> extends AbsHttpStack<T> {
         LinkedHashMap<String, String> map = params.get();
         for(Iterator<String> iterator=map.keySet().iterator();iterator.hasNext();) {
             String key = iterator.next();
+            String value = map.get(key);
+            if(value == null) continue;
             builder.addPart(Headers.of("Content-Disposition",
                     "form-data; name=\""+ key +"\""),
-                    RequestBody.create(null, map.get(key)));
+                    RequestBody.create(null, value));
         }
 
         LinkedHashMap<String, File> files = params.files();
         for(Iterator<String> iterator=files.keySet().iterator();iterator.hasNext();) {
             String key = iterator.next();
             File file = files.get(key);
+            if(file == null) continue;
             builder.addPart(Headers.of("Content-Disposition",
                     "form-data; name=\"" + key + "\";filename=\""+ file.getName() +"\""),
                     RequestBody.create(MediaType.parse("application/octet-stream"), file));
@@ -132,7 +135,9 @@ public class OkHttpStack<T> extends AbsHttpStack<T> {
         if(map != null && !map.isEmpty()) {
             for(Iterator<String> iterator=map.keySet().iterator();iterator.hasNext();) {
                 String key = iterator.next();
-                builder.addHeader(key, map.get(key));
+                String value = map.get(key);
+                if(value == null) continue;
+                builder.addHeader(key, value);
             }
             request = builder.build();
         }

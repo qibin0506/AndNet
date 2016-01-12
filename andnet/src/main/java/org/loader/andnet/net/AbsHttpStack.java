@@ -5,7 +5,7 @@ package org.loader.andnet.net;
  */
 public abstract class AbsHttpStack<T> implements INetStack<T> {
 
-    private boolean debug;
+    protected boolean debug;
 
     public void debug(boolean debug) {
         this.debug = debug;

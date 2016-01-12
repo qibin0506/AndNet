@@ -34,7 +34,9 @@ public class Helper {
 			String key = annotation.key();
 			f.setAccessible(true);
 			try {
-				params.add(key, f.get(bean));
+				Object value = f.get(bean);
+				if(value == null) continue;
+				params.add(key, value);
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
