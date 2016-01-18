@@ -39,4 +39,6 @@ public interface INetStack<T> {
     void onError(final Net.Callback<T> callback, final String msg);
 
     void cancel(final Object tag);
+    
+    LinkedHashMap<String, String> headers();
 }
