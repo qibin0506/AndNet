@@ -83,4 +83,9 @@ public abstract class AbsHttpStack<T> implements INetStack<T> {
         result.setMsg(msg);
         callback.callback(result);
     }
+    
+    @Override
+    public LinkedHashMap<String, String> headers() {
+        return null;
+    }
 }
