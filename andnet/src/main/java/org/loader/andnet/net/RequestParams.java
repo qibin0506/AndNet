@@ -21,7 +21,9 @@ public class RequestParams {
 	}
 	
 	public RequestParams add(String key, Object value) {
-		if(value instanceof File) mFileParams.put(key, (File) value);
+		if(key == null) return this;
+		if(value == null) mParams.put(key, null);
+		else if(value instanceof File) mFileParams.put(key, (File) value);
 		else mParams.put(key, value.toString());
 		return this;
 	}
