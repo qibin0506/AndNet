@@ -1,4 +1,4 @@
-## 我最新的网络框架请移步https://github.com/qibin0506/Glin](https://github.com/qibin0506/Glin)
+## 我最新的网络框架请移步[https://github.com/qibin0506/Glin](https://github.com/qibin0506/Glin)
 # AndNet
 AndNet是一个Android开中中二次封装的网络框架，可以任意轻松切换使用的底层网络请求框架，AndNet使用Parser-Callback模式，可以轻松实现从网络请求到数据解析的整个操作步骤。
 
